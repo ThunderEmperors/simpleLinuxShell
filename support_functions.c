@@ -16,39 +16,35 @@ char* read_input(void){
 
 }
 
-char** tokenize_input(char* input_buffer){
+void tokenize_input(char* input_buffer, char* argArr[]){
 
   char* token;
-  char** argArr;
   int idx;
+
+  char* file = malloc(sizeof(char)* 100);
 
   token = strtok(input_buffer, " \n");
 
-  // printf("%s", find_file_path(token));
-
-  argArr = malloc(sizeof(char *) * 1024);
   idx = 0;
 
   while(token){
-    // printf("%s", token);
-    // if(idx == 0){
-    //   argArr[idx] = find_file_path(token);
-    // } else{
-    //   argArr[idx] = token;
-    // }
-    argArr[idx] = token;
+    if(idx == 0){
+      find_file_path(token, file);
+      argArr[idx] = file;
+      // printf("%s", argArr[0]);
+    } else{
+      argArr[idx] = token;
+    }
+
+    // argArr[idx] = token;
     token = strtok(NULL, " \n");
     idx++;
   }
   argArr[idx] = NULL;
 
-  return argArr;
-
 }
 
-/*
-
-char* find_file_path(char* token){
+void find_file_path(char* token, char* path){
 
   int mypipe[2];
   if(pipe(mypipe) == -1){
@@ -76,13 +72,14 @@ char* find_file_path(char* token){
   }
 
   close(mypipe[1]);
-  char buf[100];
-  read(mypipe[0], buf, sizeof(buf));
 
+  ssize_t bytesRead = read(mypipe[0], path, 100);
+  if(bytesRead > 0){
+    path[bytesRead-1] = '\0';
+  } else {
+    path[0] = '\0';
+  }
 
-
-  return buf;
-  
+  close(mypipe[0]);
+  wait(NULL);
 }
-
-*/

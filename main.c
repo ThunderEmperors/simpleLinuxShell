@@ -5,6 +5,7 @@ int main(int argc, char* argv[]){
   (void)argc, (void)argv;
 
   char* buf;
+  char* argArr[10];
   pid_t child_pid;
   int status;
 
@@ -12,7 +13,7 @@ int main(int argc, char* argv[]){
     write(STDOUT_FILENO, "MyShell$ ", 9);
   
     buf = read_input();
-    char** argArr = tokenize_input(buf);
+    tokenize_input(buf, argArr);
 
     child_pid = fork();
 

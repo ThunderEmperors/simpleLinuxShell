@@ -9,7 +9,7 @@
 
 //support functions
 char* read_input(void);
-char** tokenize_input(char* input_buffer);
-char* find_file_path(char* token);
+void tokenize_input(char* input_buffer, char* argArr[]);
+void find_file_path(char* token, char* file);
 
 #endif
