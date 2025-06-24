@@ -16,7 +16,7 @@ char* read_input(void){
 
 }
 
-void tokenize_input(char* input_buffer, char* argArr[]){
+char* tokenize_input(char* input_buffer, char* argArr[]){
 
   char* token;
   int idx;
@@ -41,6 +41,8 @@ void tokenize_input(char* input_buffer, char* argArr[]){
     idx++;
   }
   argArr[idx] = NULL;
+
+  return file;
 
 }
 

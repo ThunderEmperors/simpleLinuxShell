@@ -13,7 +13,7 @@ int main(int argc, char* argv[]){
     write(STDOUT_FILENO, "MyShell$ ", 9);
   
     buf = read_input();
-    tokenize_input(buf, argArr);
+    char* command_file_path = tokenize_input(buf, argArr);
 
     child_pid = fork();
 
@@ -30,6 +30,8 @@ int main(int argc, char* argv[]){
     } else {
       wait(&status);
     }
+
+    free(command_file_path);
 
   }
 
