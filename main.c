@@ -4,21 +4,31 @@ int main(int argc, char* argv[]){
   
   (void)argc, (void)argv;
 
-  char* buf = NULL;
-  size_t count = 0;
-  ssize_t nread;
+  char* buf;
+  pid_t child_pid;
+  int status;
 
   while(1){
     write(STDOUT_FILENO, "MyShell$ ", 9);
   
-    nread = getline(&buf, &count, stdin);
+    buf = read_input();
+    char** argArr = tokenize_input(buf);
 
-    if(nread == -1){
-      perror("Quitting shell...");
-      exit(1);
+    child_pid = fork();
+
+    if(child_pid == -1){
+      perror("Couldn't create child process");
+      exit(41);
     }
 
-    printf("%s", buf);
+    if(child_pid == 0){
+      if(execve(argArr[0], argArr, NULL) == -1){
+        perror("execve couldn't execute.");
+        exit(7);
+      }
+    } else {
+      wait(&status);
+    }
 
   }
 
